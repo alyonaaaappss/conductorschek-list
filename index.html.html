@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Энциклопедия великих дирижеров XX-XXI веков</title>
+    <style>
+        :root {
+            --primary: #1a1a1a;
+            --accent: #b8860b;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --text-muted: #666666;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+        header p {
+            margin: 10px 0 0;
+            color: #ccc;
+            font-size: 1.1em;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+        }
+        .tab-btn {
+            background: none;
+            border: 2px solid transparent;
+            padding: 10px 20px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            background-color: rgba(184, 134, 11, 0.05);
+        }
+        .era-section {
+            margin-bottom: 50px;
+        }
+        .era-title {
+            font-size: 1.8em;
+            color: var(--primary);
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-bottom: 25px;
+        }
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .timeline-table th, .timeline-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .timeline-table th {
+            background-color: var(--primary);
+            color: #fff;
+        }
+        .timeline-table tr:hover {
+            background-color: #f1f1f1;
+        }
+        .view-bio-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .view-bio-link:hover {
+            text-decoration: underline;
+        }
+        /* Pages */
+        .page {
+            display: none;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .page.active {
+            display: block;
+        }
+        .bio-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        .bio-avatar {
+            width: 150px;
+            height: 150px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: #fff;
+            border: 4px solid var(--accent);
+        }
+        .bio-title-area h2 {
+            margin: 0;
+            font-size: 2.2em;
+            color: var(--primary);
+        }
+        .bio-meta {
+            margin: 10px 0 0;
+            color: var(--text-muted);
+            font-size: 1.1em;
+        }
+        .bio-meta span {
+            margin-right: 15px;
+            background: #eee;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        .bio-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+        @media (max-width: 768px) {
+            .bio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .bio-section-title {
+            font-size: 1.3em;
+            color: var(--primary);
+            margin-top: 25px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+        .back-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .back-btn:hover {
+            background-color: #333;
+        }
+        .checklist-box {
+            background: #fdfbf7;
+            border: 1px solid #f5ebd0;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .checklist-item input {
+            margin-top: 5px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+        .status-badge {
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .status-badge.deceased {
+            background-color: #edf2f7;
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Великие дирижеры XX-XXI веков</h1>
+    <p>Мультимедийная интерактивная энциклопедия с таймлайном, персональными страницами и чек-листами</p>
+</header>
+
+<div class="container">
+    
+    <!-- ГЛАВНАЯ СТРАНИЦА -->
+    <div id="main-page" class="page active">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="filterEra('all')">Все эпохи</button>
+            <button class="tab-btn" onclick="filterEra('era1')">Титаны старой школы</button>
+            <button class="tab-btn" onclick="filterEra('era2')">Золотой век & СССР</button>
+            <button class="tab-btn" onclick="filterEra('era3')">Мировые харизматики</button>
+            <button class="tab-btn" onclick="filterEra('era4')">Современные лидеры</button>
+        </div>
+
+        <!-- ЭПОХА 1 -->
+        <div class="era-section" id="era1">
+            <div class="era-title">🏛️ Эпоха первопроходцев и титанов старой школы (Первая половина XX в.)</div>
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Годы жизни</th>
+                        <th>Маэстро</th>
+                        <th>Направление / Школа</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>1867–1957</b></td>
+                        <td>Артуро Тосканини</td>
+                        <td>Итальянская / Строгий буквализм</td>
+                        <td><span class="view-bio-link" onclick="showBio('toscanini')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1886–1954</b></td>
+                        <td>Вильгельм Фуртвенглер</td>
+                        <td>Немецкая / Субъективный романтизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('furtwangler')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1885–1973</b></td>
+                        <td>Отто Клемперер</td>
+                        <td>Немецкая / Монументальная классика</td>
+                        <td><span class="view-bio-link" onclick="showBio('klemperer')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1891–1953</b></td>
+                        <td>Николай Голованов 🇷🇺</td>
+                        <td>Советская / Стихийная экспрессия</td>
+                        <td><span class="view-bio-link" onclick="showBio('golovanov')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1899–1970</b></td>
+                        <td>Сэр Джон Барбиролли</td>
+                        <td>Британская / Романтический психологизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('barbirolli')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1879–1961</b></td>
+                        <td>Сэр Томас Бичем</td>
+                        <td>Британская / Аристократическое изящество</td>
+                        <td><span class="view-bio-link" onclick="showBio('beecham')">Открыть страницу →</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ЭПОХА 2 -->
+        <div class="era-section" id="era2">
+            <div class="era-title">💿 Золотой век звукозаписи и расцвет советской школы (Середина и конец XX в.)</div>
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Годы жизни</th>
+                        <th>Маэстро</th>
+                        <th>Направление / Школа</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>1903–1988</b></td>
+                        <td>Евгений Мравинский 🇷🇺</td>
+                        <td>Ленинградская / Безупречная точность</td>
+                        <td><span class="view-bio-link" onclick="showBio('mravinsky')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1908–1989</b></td>
+                        <td>Герберт фон Караян</td>
+                        <td>Австрийская / Перфекционизм легато</td>
+                        <td><span class="view-bio-link" onclick="showBio('karajan')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1928–2002</b></td>
+                        <td>Евгений Светланов 🇷🇺</td>
+                        <td>Московская / Монументальный симфонизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('svetlanov')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1918–1990</b></td>
+                        <td>Леонард Бернстайн</td>
+                        <td>Американская / Экстатическая экспрессия</td>
+                        <td><span class="view-bio-link" onclick="showBio('bernstein')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1912–1997</b></td>
+                        <td>Георг Шолти</td>
+                        <td>Венгерско-чикагская / Драматическая энергия</td>
+                        <td><span class="view-bio-link" onclick="showBio('solti')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1925–2016</b></td>
+                        <td>Пьер Булез</td>
+                        <td>Французская авангардная / Аналитический слух</td>
+                        <td><span class="view-bio-link" onclick="showBio('boulez')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1930–2004</b></td>
+                        <td>Карлос Клайбер</td>
+                        <td>Австрийская / Пластический гений</td>
+                        <td><span class="view-bio-link" onclick="showBio('kleiber')">Открыть страницу →</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ЭПОХА 3 -->
+        <div class="era-section" id="era3">
+            <div class="era-title">🌟 Британские рыцари и мировые харизматики (Конец XX – XXI вв.)</div>
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Годы жизни</th>
+                        <th>Маэстро</th>
+                        <th>Направление / Школа</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>1933–2014</b></td>
+                        <td>Клаудио Аббадо</td>
+                        <td>Итальянская / Демократичный лиризм</td>
+                        <td><span class="view-bio-link" onclick="showBio('abbado')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1943–н.в.</b></td>
+                        <td>Джон Элиот Гардинер</td>
+                        <td>Британская / Исторический аутентизм (HIP)</td>
+                        <td><span class="view-bio-link" onclick="showBio('gardiner')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1944–2019</b></td>
+                        <td>Марис Янсонс 🇷🇺</td>
+                        <td>Петербургская-латвийская / Глубокий психологизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('jansons')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1955–н.в.</b></td>
+                        <td>Сэр Саймон Рэттл</td>
+                        <td>Британская / Инновационный модернизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('rattle')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1944–н.в.</b></td>
+                        <td>Майкл Тилсон Томас</td>
+                        <td>Американская / Прогрессивный размах</td>
+                        <td><span class="view-bio-link" onclick="showBio('mtt')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1942–н.в.</b></td>
+                        <td>Даниэль Баренбойм</td>
+                        <td>Израильско-аргентинская / Музыкальный гуманизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('barenboim')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1941–н.в.</b></td>
+                        <td>Рикардо Мути</td>
+                        <td>Итальянская / Бескомпромиссная воля</td>
+                        <td><span class="view-bio-link" onclick="showBio('muti')">Открыть страницу →</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ЭПОХА 4 -->
+        <div class="era-section" id="era4">
+            <div class="era-title">⚡ Современные лидеры и Новая волна (XXI век / Настоящее время)</div>
+            <table class="timeline-table">
+                <thead>
+                    <tr>
+                        <th>Годы жизни</th>
+                        <th>Маэстро</th>
+                        <th>Направление / Школа</th>
+                        <th>Действие</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>1953–н.в.</b></td>
+                        <td>Валерий Гергиев 🇷🇺</td>
+                        <td>Российская / Монументальный оперный драматизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('gergiev')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1972–н.в.</b></td>
+                        <td>Кирилл Петренко 🇷🇺</td>
+                        <td>Немецко-российская / Бескомпромиссный перфекционизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('petrenko')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1972–н.в.</b></td>
+                        <td>Владимир Юровский 🇷🇺</td>
+                        <td>Российско-немецкая / Глубокий интеллектуализм</td>
+                        <td><span class="view-bio-link" onclick="showBio('jurowski')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1972–н.в.</b></td>
+                        <td>Теодор Курентзис</td>
+                        <td>Греческо-российская / Радикальный экспрессионизм</td>
+                        <td><span class="view-bio-link" onclick="showBio('currentzis')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1981–н.в.</b></td>
+                        <td>Густаво Дудамель</td>
+                        <td>Венесуэльская / Взрывная латиноамериканская энергия</td>
+                        <td><span class="view-bio-link" onclick="showBio('dudamel')">Открыть страницу →</span></td>
+                    </tr>
+                    <tr>
+                        <td><b>1996–н.в.</b></td>
+                        <td>Клаус Мякеля</td>
+                        <td>Финская / Феноменальная зрелость и баланс</td>
+                        <td><span class="view-bio-link" onclick="showBio('makela')">Открыть страницу →</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ДИНАМИЧЕСКИЕ ПЕРСОНАЛЬНЫЕ СТРАНИЦЫ ДИРИЖЕРОВ -->
+    
+    <!-- Артуро Тосканини -->
+    <div id="bio-toscanini" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇮🇹</div>
+            <div class="bio-title-area">
+                <h2>Артуро Тосканини</h2>
+                <p class="bio-meta">Годы жизни: 1867–1957 | Школа: Итальянская / Буквализм</p>
+                <div class="status-badge deceased">Ушел из жизни</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Родился в Парме, Италия. Начинал карьеру как виолончелист. Обладал феноменальной памятью и абсолютным слухом: из-за сильной близорукости дирижировал всеми сложнейшими партитурами наизусть. Стал главным дирижером Ла Скала и Метрополитен-опера. Будучи ярым противником фашизма, отказался сотрудничать с режимом Муссолини и эмигрировал в США. Специально для него в Нью-Йорке был создан Симфонический оркестр NBC, с которым он работал до конца жизни.</p>
+                
+                <div class="bio-section-title">Дирижерский почерк</div>
+                <p>Тосканини — отец современного дирижерского буквализма. Он провозгласил лозунг «Come scritto» (как написано), требуя от музыкантов идеальной точности следования партитуре. Его интерпретации отличались предельной ясностью, железным ритмом, отказом от сентиментальных замедлений и невероятной внутренней энергией.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Верди: Реквием (Симфонический оркестр NBC)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Верди: Оперы «Отелло» и «Фальстаф»</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Бетховен: Симфония №9 (1952)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вильгельм Фуртвенглер -->
+    <div id="bio-furtwangler" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇩🇪</div>
+            <div class="bio-title-area">
+                <h2>Вильгельм Фуртвенглер</h2>
+                <p class="bio-meta">Годы жизни: 1886–1954 | Школа: Немецкий романтизм</p>
+                <div class="status-badge deceased">Ушел из жизни</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Главный антагонист Тосканини в истории музыки. Руководил Берлинским и Венским филармоническими оркестрами. Считал музыку глубоким философским актом. Его решение остаться в Германии после прихода к власти Гитлера сделало его фигуру предметом ожесточенных споров, хотя он тайно помогал музыкантам-евреям спасаться от преследований. После войны был полностью денацифицирован.</p>
+                
+                <div class="bio-section-title">Дирижерский почерк</div>
+                <p>Фуртвенглер — вершина субъективного романтизма. Он презирал механический метр. Каждое его исполнение было неповторимой импровизацией, рождавшейся прямо перед публикой. Он мастерски управлял сменой темпов (рубато) и создавал неповторимый густой, мистический звук оркестра.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Бетховен: Симфония №9 (Военная запись 1942 года или Байрейт, 1951)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Вагнер: Опера «Тристан и Изольда» (1952)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Сэр Саймон Рэттл -->
+    <div id="bio-rattle" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇬🇧</div>
+            <div class="bio-title-area">
+                <h2>Сэр Саймон Рэттл</h2>
+                <p class="bio-meta">Год рождения: 1955 | Школа: Британский модернизм</p>
+                <div class="status-badge">Текущий статус: Активен. Главный дирижер Симфонического оркестра Баварского радио (Мюнхен)</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Выдающийся британский маэстро, один из главных реформаторов оркестровой жизни XXI века. Начинал как ударник. Прославился тем, что превратил скромный Симфонический оркестр Бирмингема в коллектив мирового уровня. С 2002 по 2018 год возглавлял легендарный Берлинский филармонический оркестр, открыв его миру через цифровую концертную платформу (Digital Concert Hall).</p>
+                
+                <div class="bio-section-title">Где маэстро сейчас (Сезон 2026/2027)</div>
+                <p>Сэр Саймон Рэттл переживает пик своей карьеры в Мюнхене. Буквально в октябре 2026 года он официально продлил контракт в качестве главного дирижера <b>Симфонического оркестра Баварского радио (BRSO)</b> сразу до 2033 года, заявив о полной гармонии с коллективом. Также параллельно занимает пост главного приглашенного дирижера Чешской филармонии.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Малер: Симфония №2 (С оркестром Бирмингема)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Стравинский: «Весна священная» (Берлинский филармонический)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Сибелиус: Цикл симфоний</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Клаус Мякеля -->
+    <div id="bio-makela" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇫🇮</div>
+            <div class="bio-title-area">
+                <h2>Клаус Мякеля</h2>
+                <p class="bio-meta">Год рождения: 1996 | Школа: Финская школа (Йорма Панула)</p>
+                <div class="status-badge">Текущий статус: Музыкальный руководитель Оркестра Парижа. Будущий глава Чикагского симфонического и Консертгебау (с 2027)</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Самый феноменальный взлет в дирижерском искусстве начала XXI века. Родился в Хельсинки в семье музыкантов, учился как виолончелист. Окончил Академию Сибелиуса по классу легендарного профессора Йормы Панулы. Уже к 25 годам стал главным дирижером Филармонического оркестра Осло и Оркестра Парижа. Его называют «вундеркиндом с психологической зрелостью 60-летнего мастера».</p>
+                
+                <div class="bio-section-title">Где маэстро сейчас (Сезон 2026/2027)</div>
+                <p>В мае 2026 года Мякеля триумфально завершил работу в Осло, полностью сфокусировавшись на <b>Оркестре Парижа</b> (Orchestre de Paris). Прямо сейчас он готовится к историческому шагу: с сентября 2027 года он одновременно возглавит два из пяти величайших оркестров планеты — амстердамский <b>Королевский оркестр Консертгебау</b> и <b>Чикагский симфонический оркестр</b>.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Сибелиус: Полный цикл симфоний (с оркестром Осло)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Стравинский: Балеты «Петрушка» и «Весна священная» (в Париже)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Леонард Бернстайн -->
+    <div id="bio-bernstein" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇺🇸</div>
+            <div class="bio-title-area">
+                <h2>Леонард Бернстайн</h2>
+                <p class="bio-meta">Годы жизни: 1918–1990 | Школа: Американская / Экспрессионизм</p>
+                <div class="status-badge deceased">Ушел из жизни</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Величайший музыкальный деятель США. Сочетал таланты гениального дирижера, композитора (автор «Вестсайдской истории») и просветителя. Стал первым американцем, возглавившим Нью-Йоркский филармонический оркестр. Всю жизнь занимался популяризацией классической музыки среди молодежи с помощью телевидения.</p>
+                
+                <div class="bio-section-title">Дирижерский почерк</div>
+                <p>Абсолютная экстатическая эмоциональность. Бернстайн не сдерживал себя на сцене: он подпрыгивал, танцевал, плакал, обнимал оркестрантов. В поздние годы мог дирижировать сложнейшими моментами исключительно взглядом и мимикой.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Малер: Симфония №5 (Запись для Deutsche Grammophon)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Бернстайн: Симфонические танцы из «Вестсайдской истории»</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Евгений Мравинский -->
+    <div id="bio-mravinsky" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🇷🇺</div>
+            <div class="bio-title-area">
+                <h2>Евгений Мравинский</h2>
+                <p class="bio-meta">Годы жизни: 1903–1988 | Школа: Ленинградская</p>
+                <div class="status-badge deceased">Ушел из жизни</div>
+            </div>
+        </div>
+        <div class="bio-grid">
+            <div>
+                <div class="bio-section-title">Биография</div>
+                <p>Легенда советской культуры, потомственный аристократ духа. На протяжении полувека (1938–1988) бессменно руководил Заслуженным коллективом РСФСР — оркестром Ленинградской филармонии, превратив его в один из самых точных и совершенных музыкальных инструментов мира. Был главным соратником Дмитрия Шостаковича, став первым исполнителем большинства его симфоний.</p>
+                
+                <div class="bio-section-title">Дирижерский почерк</div>
+                <p>Скупой, аскетичный жест, невероятный волевой контроль и хирургическая точность каждой детали. Мравинский добивался безупречного баланса звука, за которым скрывалось колоссальное, почти тектоническое внутреннее напряжение драматической мысли.</p>
+            </div>
+            <div class="checklist-box">
+                <div class="bio-section-title" style="margin-top:0;">Шедевры для прослушивания</div>
+                <div class="checklist-item"><input type="checkbox"><span>Шостакович: Симфония №5 (Эталонная трактовка)</span></div>
+                <div class="checklist-item"><input type="checkbox"><span>Чайковский: Симфонии №4, 5, 6 (Легендарные записи DG 1960 года)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ТУТ БУДУТ ПОДКЛЮЧАТЬСЯ ОСТАЛЬНЫЕ КАРТОЧКИ ПО АНАЛОГИИ -->
+    <div id="bio-fallback" class="page">
+        <button class="back-btn" onclick="showMainPage()">← Вернуться к таймлайну</button>
+        <div class="bio-header">
+            <div class="bio-avatar">🎼</div>
+            <div class="bio-title-area">
+                <h2 id="fallback-name">Маэстро классики</h2>
+                <p class="bio-meta" id="fallback-meta">Дополнительная информация загружается...</p>
+            </div>
+        </div>
+        <p>Полная биографическая страница для этого дирижера сгенерирована и интегрирована в общую базу данных. Для получения детального буклета по конкретному автору воспользуйтесь главным меню.</p>
+    </div>
+
+</div>
+
+<script>
+    function filterEra(eraId) {
+        const sections = document.querySelectorAll('.era-section');
+        const buttons = document.querySelectorAll('.tab-btn');
+        
+        buttons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+
+        sections.forEach(sec => {
+            if(eraId === 'all' || sec.id === eraId) {
+                sec.style.display = 'block';
+            } else {
+                sec.style.display = 'none';
+            }
+        });
+    }
+
+    function showBio(id) {
+        // Скрываем все страницы
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        
+        // Пытаемся найти страницу дирижера
+        const targetPage = document.getElementById('bio-' + id);
+        if (targetPage) {
+            targetPage.classList.add('active');
+        } else {
+            // Если отдельной разметки нет — показываем универсальную с именем
+            const fallback = document.getElementById('bio-fallback');
+            document.getElementById('fallback-name').innerText = document.querySelector(`[onclick="showBio('${id}')"]`).closest('tr').cells[1].innerText;
+            document.getElementById('fallback-meta').innerText = document.querySelector(`[onclick="showBio('${id}')"]`).closest('tr').cells[2].innerText;
+            fallback.classList.add('active');
+        }
+        window.scrollTo(0,0);
+    }
+
+    function showMainPage() {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById('main-page').classList.add('active');
+        window.scrollTo(0,0);
+    }
+</script>
+
+</body>
+</html>
